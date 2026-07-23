@@ -17,16 +17,11 @@ app = Flask(__name__, static_folder="static")
 TMDB_API_KEY = os.getenv("TMDB_API_KEY")
 TMDB_DISCOVER_URL = "https://api.themoviedb.org/3/discover/movie"
 
-# Hardening: Security Headers & CSP via Talisman
+# Updated Talisman configuration (CSP disabled temporarily for testing)
 Talisman(
     app,
-    content_security_policy={
-        'default-src': '\'self\'',
-        'img-src': ['\'self\'', 'https://image.tmdb.org', 'data:'],
-        'style-src': ['\'self\'', '\'unsafe-inline\'', 'https://fonts.googleapis.com'],
-        'font-src': ['\'self\'', 'https://fonts.gstatic.com']
-    },
-    force_https=os.getenv("FLASK_ENV") == "production"
+    content_security_policy=None,  # Temporarily disable CSP to ensure script/fetch execution
+    force_https=False
 )
 
 # Hardening: Rate Limiting (Prevents API abuse / spam)
